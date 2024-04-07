@@ -132,7 +132,7 @@ while report_id < max_report_scanning:
             fh.write(str(data))
             print("Saved data.", end=" ")
 
-        print(f"Report created on {subdate} has status {status}.")
+        print(f"Report created on {subdate} has status '{status}'.")
 
         if mode == "one":
             exit("Finished retrieving one valid report.")

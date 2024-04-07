@@ -1,3 +1,4 @@
+import sys
 import os
 import requests
 from bs4 import BeautifulSoup
@@ -8,13 +9,21 @@ This script retrieves a URL (with GET), retrieves the hidden inputs,
 then POSTs a request (to the same URL) using the defined hidden inputs
 and retrieves reports.
 """
+#### Command line arguments ####
+
+mode = "endless"
+if len(sys.argv) >= 2 and sys.argv[1] == "one":
+    mode = "one"
 
 #### Constants ####
 # our site of interest
 site = "https://www.vdl.lu/fr/la-ville/participez-vous-aussi/report-it-signalez-un-incident"
 # but the data retrieval is actually in a frame from a separate url
 qurl = "https://reportit.vdl.lu/frame/search.php"
+
 sleep_duration = 60 
+if mode == "one":
+    sleep_duration = 2
 
 # raw data is stored here
 raw_data_path = "../data/raw/"
@@ -125,8 +134,12 @@ while report_id < max_report_scanning:
 
         print(f"Report created on {subdate} has status {status}.")
 
+        if mode == "one":
+            exit("Finished retrieving one valid report.")
+
         # get ready for next query
         time.sleep(sleep_duration)
+
         continue
 
     print(soup)
